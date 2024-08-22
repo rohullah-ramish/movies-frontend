@@ -5,9 +5,13 @@ import ErrorView from "@/components/elements/ErrorView";
 import NoDataView from "@/components/elements/NoDataView";
 
 import DataView from "./DataView";
+import { useEffect, useState } from "react";
 
 function MoviesContainer() {
-  const { data, error, isLoading } = useGetMoviesByNameQuery();
+  const [page, setPage] = useState(1);
+  const { data, error, isLoading } = useGetMoviesByNameQuery(page);
+
+  useEffect(() => console.log(page), [page]);
 
   return (
     <div>
@@ -18,7 +22,13 @@ function MoviesContainer() {
       ) : error ? (
         <ErrorView error={error} />
       ) : data ? (
-        <DataView data={data.Search} />
+        <DataView
+          data={data.Search}
+          total={data.totalResults}
+          page={page}
+          prev={() => setPage((p) => p-1)}
+          next={() => setPage((p) => p+1)}
+        />
       ) : (
         <NoDataView />
       )}

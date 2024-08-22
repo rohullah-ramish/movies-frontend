@@ -10,12 +10,13 @@ export type Movie = {
 
 type GetByNameResponse = {
   Search: Movie[];
+  totalResults: number;
 };
 
 export const movieApi = createApi({
   reducerPath: "movieApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://www.omdbapi.com/?apikey=${process.env.NEXT_PUBLIC_MOVIES_API}&s=Batman`,
+    // baseUrl: `https://www.omdbapi.com/?apikey=${process.env.NEXT_PUBLIC_MOVIES_API}&s=Batman`,
   }),
   extractRehydrationInfo: (action, { reducerPath }) => {
     if (isHydrateAction(action)) {
@@ -23,8 +24,9 @@ export const movieApi = createApi({
     }
   },
   endpoints: (builder) => ({
-    getMoviesByName: builder.query<GetByNameResponse, void>({
-      query: () => `/`,
+    getMoviesByName: builder.query<GetByNameResponse, number>({
+      query: (page = 1) =>
+        `https://www.omdbapi.com/?apikey=${process.env.NEXT_PUBLIC_MOVIES_API}&s=Batman&page=${page}`,
     }),
   }),
 });
