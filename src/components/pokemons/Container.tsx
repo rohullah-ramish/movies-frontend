@@ -1,8 +1,9 @@
-import { useGetPokemonByNameQuery } from "@/store/pokemon";
+import { useGetPokemonByNameQuery } from "@/services/pokemon";
 
-import LoadingView from "./LoadingView";
-import ErrorView from "./ErrorView";
-import NoDataView from "./NoDataView";
+import LoadingView from "@/components/elements/LoadingView";
+import ErrorView from "@/components/elements/ErrorView";
+import NoDataView from "@/components/elements/NoDataView";
+
 import DataView from "./DataView";
 
 function PokemonContainer() {
@@ -10,7 +11,7 @@ function PokemonContainer() {
 
   return (
     <div>
-      <h1>Hello, World!</h1>
+      <h1>Pokemons</h1>
 
       {isLoading ? (
         <LoadingView />

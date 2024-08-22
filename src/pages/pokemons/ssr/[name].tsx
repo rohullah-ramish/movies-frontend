@@ -1,10 +1,10 @@
-import PokemonContainer from "@/components/pokemon/Container";
+import PokemonContainer from "@/components/pokemons/Container";
 import MainLayout from "@/layouts/MainLayout";
 import { wrapper } from "@/store";
 
-import { getPokemonByName, getRunningQueriesThunk } from "@/store/pokemon";
+import { getPokemonByName, getRunningQueriesThunk } from "@/services/pokemon";
 
-function SSRHome() {
+function SSRPokemons() {
   return (
     <MainLayout>
       <PokemonContainer />
@@ -26,4 +26,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 
-export default SSRHome;
+export default SSRPokemons;

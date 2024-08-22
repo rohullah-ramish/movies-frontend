@@ -1,4 +1,4 @@
-import { Pokemon } from "@/store/pokemon";
+import { Pokemon } from "@/services/pokemon";
 
 type DataViewProps = { data: Pokemon };
 function DataView(props: DataViewProps) {

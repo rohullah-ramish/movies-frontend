@@ -1,7 +1,7 @@
-import PokemonContainer from "@/components/pokemon/Container";
+import PokemonContainer from "@/components/pokemons/Container";
 import MainLayout from "@/layouts/MainLayout";
 
-function Home() {
+function Pokemons() {
   return (
     <MainLayout>
       <PokemonContainer />
@@ -9,4 +9,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Pokemons;
