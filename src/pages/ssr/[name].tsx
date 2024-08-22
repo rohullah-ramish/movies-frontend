@@ -2,10 +2,15 @@ import DataView from "@/components/pokemon/DataView";
 import ErrorView from "@/components/pokemon/ErrorView";
 import LoadingView from "@/components/pokemon/LoadingView";
 import NoDataView from "@/components/pokemon/NoDataView";
+import { wrapper } from "@/store";
 
-import { useGetPokemonByNameQuery } from "@/store/pokemon";
+import {
+  getPokemonByName,
+  getRunningQueriesThunk,
+  useGetPokemonByNameQuery,
+} from "@/store/pokemon";
 
-function Home() {
+function SSRHome() {
   const { data, error, isLoading } = useGetPokemonByNameQuery("pikachu");
 
   return (
@@ -25,4 +30,18 @@ function Home() {
   );
 }
 
-export default Home;
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context) => {
+    const name = context.params?.name;
+
+    if (typeof name === "string") {
+      store.dispatch(getPokemonByName.initiate(name));
+    }
+
+    await Promise.all(store.dispatch(getRunningQueriesThunk()));
+
+    return { props: {} };
+  }
+);
+
+export default SSRHome;
