@@ -1,4 +1,5 @@
 import { Movie } from "@/services/movies";
+import { useRouter } from "next/router";
 import MovieView from "./MovieView";
 import Header from "./Header";
 import Title from "./Title";
@@ -15,6 +16,13 @@ type DataViewProps = PaginationProps & {
 function DataView(props: DataViewProps) {
   const { data, ...rest } = props;
 
+  const router = useRouter();
+  
+  const logout = () => {
+    localStorage.clear();
+    router.push("/");
+  };
+
   return (
     <MovieWrapper>
       <Header>
@@ -26,7 +34,7 @@ function DataView(props: DataViewProps) {
         </Title>
         <button
           className="w-[104px] flex items-center justify-center gap-3 text-sm"
-          onClick={() => {}}
+          onClick={logout}
         >
           Logout <LuLogOut className="text-lg" />
         </button>
