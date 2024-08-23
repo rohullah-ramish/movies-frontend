@@ -27,6 +27,54 @@ body {
 }
 
 @layer utilities {
+  body {
+    font-family: theme("fontFamily.poppins");
+    font-weight: theme("fontWeight.medium");
+    font-size: theme("fontSize.md");
+  }
+
+  h1 {
+    font-family: theme("fontFamily.poppins");
+    font-weight: theme("fontWeight.semibold");
+    font-size: theme("fontSize.6xl");
+  }
+
+  h2 {
+    font-family: theme("fontFamily.poppins");
+    font-weight: theme("fontWeight.semibold");
+    font-size: theme("fontSize.5xl");
+  }
+
+  h3 {
+    font-family: theme("fontFamily.poppins");
+    font-weight: theme("fontWeight.semibold");
+    font-size: theme("fontSize.4xl");
+  }
+
+  h4 {
+    font-family: theme("fontFamily.poppins");
+    font-weight: theme("fontWeight.bold");
+    font-size: theme("fontSize.3xl");
+  }
+
+  h5 {
+    font-family: theme("fontFamily.poppins");
+    font-weight: theme("fontWeight.bold");
+    font-size: theme("fontSize.2xl");
+  }
+
+  h6 {
+    font-family: theme("fontFamily.poppins");
+    font-weight: theme("fontWeight.bold");
+    font-size: theme("fontSize.xl");
+  }
+
+  h6 {
+    font-family: theme("fontFamily.poppins");
+    font-weight: theme("fontWeight.bold");
+    font-size: theme("fontSize.xl");
+  }
+
   .text-balance {
     text-wrap: balance;
   }
