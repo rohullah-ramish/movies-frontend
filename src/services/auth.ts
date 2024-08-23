@@ -13,7 +13,7 @@ export type LoginResponse = {
   message: string;
 };
 
-export const api = createApi({
+export const authApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
@@ -43,5 +43,5 @@ export const api = createApi({
 });
 
 // Export hooks for the endpoints
-export const { useLoginUserMutation } = api;
-export const { loginUser } = api.endpoints;
+export const { useLoginUserMutation } = authApi;
+export const { loginUser } = authApi.endpoints;

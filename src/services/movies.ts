@@ -1,12 +1,21 @@
 import { isHydrateAction } from "@/store/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const PAGE_SIZE = 8;
+
 export type Movie = {
   _id: string;
   title: string;
   publish_year: string;
-  Type: string;
   poster: string;
+};
+
+type GetMoviesListResponse = {
+  message: string;
+  total: number;
+  limit: number;
+  data: Movie[];
+  success: boolean;
 };
 
 export const movieApi = createApi({
@@ -32,8 +41,8 @@ export const movieApi = createApi({
     }
   },
   endpoints: (builder) => ({
-    getMoviesByName: builder.query<any, number>({
-      query: (page = 1) => `movies?page=${page}`,
+    getMoviesList: builder.query<GetMoviesListResponse, number>({
+      query: (page = 1) => `movies?page=${page}&limit=${PAGE_SIZE}`,
     }),
     addMovies: builder.query<any, number>({
       query: (body) => ({
@@ -64,12 +73,7 @@ export const movieApi = createApi({
   }),
 });
 
-export const { useGetMoviesByNameQuery } = movieApi;
+export const { useGetMoviesListQuery } = movieApi;
 
-export const {
-  getMoviesByName,
-  addMovies,
-  getMoviesDetails,
-  deleteMovies,
-  updateMovies,
-} = movieApi.endpoints;
+export const { addMovies, getMoviesDetails, deleteMovies, updateMovies } =
+  movieApi.endpoints;

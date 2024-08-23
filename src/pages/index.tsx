@@ -7,12 +7,16 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+
   const [loginUser, { isLoading, isError }] = useLoginUserMutation();
+
   const router = useRouter();
+
   const handleLogin = async () => {
     try {
       const result = await loginUser({ email, password }).unwrap();
       console.log("Login successful:", result);
+      
       if (result.success) {
         localStorage.setItem("token", result.token);
         localStorage.setItem("refresh-token", result.refresh_token);

@@ -1,17 +1,17 @@
-import { useGetMoviesByNameQuery } from "@/services/movies";
+import { useState } from "react";
+
+import { useGetMoviesListQuery } from "@/services/movies";
 
 import LoadingView from "@/components/elements/LoadingView";
 import ErrorView from "@/components/elements/ErrorView";
 import NoDataView from "@/components/elements/NoDataView";
 
 import DataView from "./DataView";
-import { useEffect, useState } from "react";
 
 function MoviesContainer() {
   const [page, setPage] = useState(1);
-  const { data, error, isLoading } = useGetMoviesByNameQuery(page);
-
-  useEffect(() => console.log(data), [data]);
+  
+  const { data: moviesData, error, isLoading } = useGetMoviesListQuery(page);
 
   return (
     <div className="flex flex-1 justify-center w-full">
@@ -19,10 +19,10 @@ function MoviesContainer() {
         <LoadingView />
       ) : error ? (
         <ErrorView error={error} />
-      ) : data?.length ? (
+      ) : moviesData?.data?.length ? (
         <DataView
-          data={data.data}
-          total={data.totalResults}
+          data={moviesData.data}
+          total={moviesData.total}
           page={page}
           prev={() => setPage((p) => p - 1)}
           next={() => setPage((p) => p + 1)}
