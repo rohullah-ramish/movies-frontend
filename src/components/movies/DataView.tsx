@@ -10,10 +10,11 @@ type DataViewProps = {
   currentPage: string;
   prev: () => void;
   next: () => void;
+  jumpToPage: (nextPage: number) => void;
 };
 
 function DataView(props: DataViewProps) {
-  const { data, total, page, prev, next } = props;
+  const { data, total, page, prev, next, jumpToPage } = props;
 
   return (
     <div className="w-full px-6 lg:px-12">
@@ -33,11 +34,24 @@ function DataView(props: DataViewProps) {
           <MovieView key={key} movie={movie} />
         ))}
       </div>
-      
-      <div className="w-full">
+
+      <div className="mx-auto w-min flex items-center justify-center gap-4 py-12 font-montserrat">
         <button onClick={prev} disabled={page === 1}>
           Prev
         </button>
+        <div className="flex items-center justify-center gap-3">
+          {Array.from(new Array(total)).map((_, index) => (
+            <button
+              key={index}
+              className={`w-[32px] h-[32px] text-white rounded-[4px] ${
+                page === index + 1 ? "bg-primary" : "bg-accent"
+              }`}
+              onClick={() => jumpToPage(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
         <button onClick={next} disabled={page >= total}>
           Next
         </button>

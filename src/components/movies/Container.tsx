@@ -10,7 +10,7 @@ import DataView from "./DataView";
 
 function MoviesContainer() {
   const [page, setPage] = useState(1);
-  
+
   const { data: moviesData, error, isLoading } = useGetMoviesListQuery(page);
 
   return (
@@ -26,6 +26,7 @@ function MoviesContainer() {
           page={page}
           prev={() => setPage((p) => p - 1)}
           next={() => setPage((p) => p + 1)}
+          jumpToPage={(p) => setPage(p)}
           limit={0}
           currentPage={""}
         />
