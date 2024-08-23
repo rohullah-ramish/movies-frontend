@@ -8,6 +8,7 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { LuLogOut } from "react-icons/lu";
 import MovieWrapper from "./MovieWrapper";
 import Pagination, { PaginationProps } from "./Pagination";
+import { useState } from "react";
 
 type DataViewProps = PaginationProps & {
   data: Movie[];
@@ -16,8 +17,10 @@ type DataViewProps = PaginationProps & {
 function DataView(props: DataViewProps) {
   const { data, ...rest } = props;
 
+  const [isLoggedIn] = useState(localStorage.getItem("token") ? true : false);
+
   const router = useRouter();
-  
+
   const logout = () => {
     localStorage.clear();
     router.push("/");
@@ -28,16 +31,24 @@ function DataView(props: DataViewProps) {
       <Header>
         <Title>
           My movies
-          <Link className="text-[inherit]" href="/movies/add">
-            <IoIosAddCircleOutline className="text-4xl" />
-          </Link>
+          {isLoggedIn ? (
+            <Link className="text-[inherit]" href="/movies/add">
+              <IoIosAddCircleOutline className="text-4xl" />
+            </Link>
+          ) : (
+            ""
+          )}
         </Title>
-        <button
-          className="w-[104px] flex items-center justify-center gap-3 text-sm"
-          onClick={logout}
-        >
-          Logout <LuLogOut className="text-lg" />
-        </button>
+        {isLoggedIn ? (
+          <button
+            className="w-[104px] flex items-center justify-center gap-3 text-sm"
+            onClick={logout}
+          >
+            Logout <LuLogOut className="text-lg" />
+          </button>
+        ) : (
+          ""
+        )}
       </Header>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
