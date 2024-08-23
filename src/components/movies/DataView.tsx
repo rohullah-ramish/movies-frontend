@@ -24,7 +24,10 @@ function DataView(props: DataViewProps) {
           <IoIosAddCircleOutline className="text-4xl" />
         </h2>
 
-        <button className="w-[104px] flex items-center justify-center gap-3 text-sm">
+        <button
+          className="w-[104px] flex items-center justify-center gap-3 text-sm"
+          onClick={() => {}}
+        >
           Logout <LuLogOut className="text-lg" />
         </button>
       </div>
