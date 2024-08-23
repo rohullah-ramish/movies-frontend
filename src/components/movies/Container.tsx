@@ -14,7 +14,7 @@ function MoviesContainer() {
   const { data: moviesData, error, isLoading } = useGetMoviesListQuery(page);
 
   return (
-    <div className="flex flex-1 justify-center w-full">
+    <>
       {isLoading ? (
         <LoadingView />
       ) : error ? (
@@ -27,13 +27,11 @@ function MoviesContainer() {
           prev={() => setPage((p) => p - 1)}
           next={() => setPage((p) => p + 1)}
           jumpToPage={(p) => setPage(p)}
-          limit={0}
-          currentPage={""}
         />
       ) : (
         <NoDataView />
       )}
-    </div>
+    </>
   );
 }
 
