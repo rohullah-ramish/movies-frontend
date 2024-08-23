@@ -15,18 +15,20 @@ function MoviesContainer() {
 
   return (
     <div className="flex flex-1 justify-center w-full">
-
       {isLoading ? (
         <LoadingView />
       ) : error ? (
         <ErrorView error={error} />
-      ) : data ? (
+      ) : data?.length ? (
         <DataView
-              data={data.data}
-              total={data.totalResults}
-              page={page}
-              prev={() => setPage((p) => p - 1)}
-              next={() => setPage((p) => p + 1)} limit={0} currentPage={""}        />
+          data={data.data}
+          total={data.totalResults}
+          page={page}
+          prev={() => setPage((p) => p - 1)}
+          next={() => setPage((p) => p + 1)}
+          limit={0}
+          currentPage={""}
+        />
       ) : (
         <NoDataView />
       )}
