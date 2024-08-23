@@ -11,9 +11,15 @@ const poppins = Poppins({
 
 function MainLayout(props: PropsWithChildren) {
   return (
-    <div className={`${montserrat.variable} ${poppins.variable}`}>
+    <main className={`${montserrat.variable} ${poppins.variable}`}>
+      <img
+        src="/assets/illustration.png"
+        className="absolute bottom-0"
+        alt="Illustration"
+      />
+
       {props.children}
-    </div>
+    </main>
   );
 }
 

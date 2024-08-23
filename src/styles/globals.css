@@ -2,80 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
 @layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
   body {
-    font-family: theme("fontFamily.poppins");
-    font-weight: theme("fontWeight.medium");
-    font-size: theme("fontSize.md");
+    @apply font-montserrat font-medium text-md;
   }
 
   h1 {
-    font-family: theme("fontFamily.poppins");
-    font-weight: theme("fontWeight.semibold");
-    font-size: theme("fontSize.6xl");
+    @apply font-poppins font-semibold text-6xl;
   }
 
   h2 {
-    font-family: theme("fontFamily.poppins");
-    font-weight: theme("fontWeight.semibold");
-    font-size: theme("fontSize.5xl");
+    @apply font-poppins font-semibold text-5xl;
   }
 
   h3 {
-    font-family: theme("fontFamily.poppins");
-    font-weight: theme("fontWeight.semibold");
-    font-size: theme("fontSize.4xl");
+    @apply font-poppins font-semibold text-4xl;
   }
 
   h4 {
-    font-family: theme("fontFamily.poppins");
-    font-weight: theme("fontWeight.bold");
-    font-size: theme("fontSize.3xl");
+    @apply font-poppins font-bold text-3xl;
   }
 
   h5 {
-    font-family: theme("fontFamily.poppins");
-    font-weight: theme("fontWeight.bold");
-    font-size: theme("fontSize.2xl");
+    @apply font-poppins font-bold text-2xl;
   }
 
   h6 {
-    font-family: theme("fontFamily.poppins");
-    font-weight: theme("fontWeight.bold");
-    font-size: theme("fontSize.xl");
+    @apply font-poppins font-bold text-xl;
   }
 
-  h6 {
-    font-family: theme("fontFamily.poppins");
-    font-weight: theme("fontWeight.bold");
-    font-size: theme("fontSize.xl");
+  button {
+    @apply h-[54px] w-full rounded-[10px];
   }
 
-  .text-balance {
-    text-wrap: balance;
+  label {
+    @apply text-sm;
+  }
+
+  input:not([type="checkbox"]) {
+    @apply w-full h-[45px] text-sm px-5 py-[10px] bg-neutral rounded-[10px];
+  }
+  input::placeholder {
+    @apply text-white font-montserrat;
+  }
+
+  input[type="checkbox"] {
+    @apply h-[18px] w-[18px] relative;
+  }
+
+  input[type="checkbox"]::before {
+    @apply bg-neutral content-[""] block absolute text-center h-[inherit] w-[inherit] left-0 top-0 rounded-[2px];
+  }
+
+  input[type="checkbox"]:checked:after {
+    @apply block absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%];
+
+    content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg>');
+  }
+
+  main {
+    @apply min-h-[100vh] w-full relative bg-base text-white flex items-start justify-start flex-col;
+  }
+
+  .illustration {
+    @apply w-full object-contain bg-primary absolute bottom-0 left-0;
   }
 }
