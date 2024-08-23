@@ -11,11 +11,10 @@ function MoviesContainer() {
   const [page, setPage] = useState(1);
   const { data, error, isLoading } = useGetMoviesByNameQuery(page);
 
-  useEffect(() => console.log(page), [page]);
+  useEffect(() => console.log(data), [data]);
 
   return (
-    <div>
-      <h1>Movies!</h1>
+    <div className="flex flex-1 justify-center w-full">
 
       {isLoading ? (
         <LoadingView />
@@ -23,12 +22,11 @@ function MoviesContainer() {
         <ErrorView error={error} />
       ) : data ? (
         <DataView
-          data={data.Search}
-          total={data.totalResults}
-          page={page}
-          prev={() => setPage((p) => p-1)}
-          next={() => setPage((p) => p+1)}
-        />
+              data={data.data}
+              total={data.totalResults}
+              page={page}
+              prev={() => setPage((p) => p - 1)}
+              next={() => setPage((p) => p + 1)} limit={0} currentPage={""}        />
       ) : (
         <NoDataView />
       )}

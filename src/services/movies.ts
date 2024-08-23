@@ -2,10 +2,11 @@ import { isHydrateAction } from "@/store/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export type Movie = {
-  Title: string;
-  Year: string;
+  _id:string,
+  title: string;
+  publish_year: string;
   Type: string;
-  Poster: string;
+  poster: string;
 };
 
 type GetByNameResponse = {
@@ -16,7 +17,19 @@ type GetByNameResponse = {
 export const movieApi = createApi({
   reducerPath: "movieApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: `https://www.omdbapi.com/?apikey=${process.env.NEXT_PUBLIC_MOVIES_API}&s=Batman`,
+    baseUrl: 'http://localhost:8080/api/',
+    prepareHeaders: (headers, { getState }) => {
+      // Get the token from the state (or wherever you store it)
+      // const token = (getState() as RootState).auth.token;
+      const token = localStorage.getItem("token");
+
+      // If we have a token, set it in the headers
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+
+      return headers;
+    },
   }),
   extractRehydrationInfo: (action, { reducerPath }) => {
     if (isHydrateAction(action)) {
@@ -24,9 +37,8 @@ export const movieApi = createApi({
     }
   },
   endpoints: (builder) => ({
-    getMoviesByName: builder.query<GetByNameResponse, number>({
-      query: (page = 1) =>
-        `https://www.omdbapi.com/?apikey=${process.env.NEXT_PUBLIC_MOVIES_API}&s=Batman&page=${page}`,
+    getMoviesByName: builder.query<any, number>({
+      query: (page = 1) => `movies?page=${page}`,
     }),
   }),
 });
