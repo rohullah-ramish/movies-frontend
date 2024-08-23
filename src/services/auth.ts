@@ -16,7 +16,7 @@ export type LoginResponse = {
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8080/api/'
+    baseUrl: 'http://ec2-3-26-202-152.ap-southeast-2.compute.amazonaws.com/api/'
   }),
   extractRehydrationInfo: (action, { reducerPath }) => {
     if (isHydrateAction(action)) {
