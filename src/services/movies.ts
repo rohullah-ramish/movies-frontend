@@ -9,15 +9,10 @@ export type Movie = {
   poster: string;
 };
 
-type GetByNameResponse = {
-  Search: Movie[];
-  totalResults: number;
-};
-
 export const movieApi = createApi({
   reducerPath: "movieApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://ec2-3-26-202-152.ap-southeast-2.compute.amazonaws.com/api/",
+    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       // Get the token from the state (or wherever you store it)
       // const token = (getState() as RootState).auth.token;
@@ -71,4 +66,10 @@ export const movieApi = createApi({
 
 export const { useGetMoviesByNameQuery } = movieApi;
 
-export const { getMoviesByName, addMovies ,getMoviesDetails,deleteMovies,updateMovies} = movieApi.endpoints;
+export const {
+  getMoviesByName,
+  addMovies,
+  getMoviesDetails,
+  deleteMovies,
+  updateMovies,
+} = movieApi.endpoints;

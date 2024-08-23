@@ -8,15 +8,15 @@ export type LoginRequest = {
 
 export type LoginResponse = {
   token: string;
-  refresh_token:string,
-  success:boolean,
-  message:string
+  refresh_token: string;
+  success: boolean;
+  message: string;
 };
 
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://ec2-3-26-202-152.ap-southeast-2.compute.amazonaws.com/api/'
+    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
   extractRehydrationInfo: (action, { reducerPath }) => {
     if (isHydrateAction(action)) {
@@ -27,16 +27,15 @@ export const api = createApi({
     // Login user endpoint
     loginUser: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
-        url: 'users/login',
-        method: 'POST',
+        url: "users/login",
+        method: "POST",
         body: credentials,
       }),
-      async onQueryStarted(args, { dispatch, queryFulfilled }):Promise<any> {
+      async onQueryStarted(args, { dispatch, queryFulfilled }): Promise<any> {
         try {
           return await queryFulfilled;
-          
         } catch (error) {
-          console.error('Login failed:', error);
+          console.error("Login failed:", error);
         }
       },
     }),
