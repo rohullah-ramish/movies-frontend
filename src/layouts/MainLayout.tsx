@@ -14,7 +14,7 @@ function MainLayout(props: PropsWithChildren) {
     <main className={`${montserrat.variable} ${poppins.variable}`}>
       <img
         src="/assets/illustration.png"
-        className="absolute bottom-0"
+        className="absolute bottom-0 w-full h-[111px]"
         alt="Illustration"
       />
 

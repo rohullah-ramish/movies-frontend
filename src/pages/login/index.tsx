@@ -3,7 +3,7 @@ import MainLayout from "@/layouts/MainLayout";
 function Login() {
   return (
     <MainLayout>
-      <div className="flex-1 h-full w-full flex flex-col items-center justify-center p-6">
+      <div className="flex-1 h-full w-full flex flex-col items-center justify-center p-6 max-w-[300px] mx-auto">
         <h2 className="mb-8 font-montserrat font-semibold">Sign In</h2>
         <div className="w-full flex flex-col justify-center items-center gap-6">
           <input type="email" placeholder="Email" />
