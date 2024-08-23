@@ -1,4 +1,5 @@
 import { Movie } from "@/services/movies";
+import { useRouter } from "next/router";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { LuLogOut } from "react-icons/lu";
 
@@ -15,7 +16,11 @@ type DataViewProps = {
 
 function DataView(props: DataViewProps) {
   const { data, total, page, prev, next, jumpToPage } = props;
-
+  const router = useRouter()
+  const logout = () => {
+    localStorage.clear();
+    router.push('/')
+  };
   return (
     <div className="w-full px-6 lg:px-12">
       <div className="py-6 lg:py-12 flex items-center justify-between w-full">
@@ -26,7 +31,7 @@ function DataView(props: DataViewProps) {
 
         <button
           className="w-[104px] flex items-center justify-center gap-3 text-sm"
-          onClick={() => {}}
+          onClick={logout}
         >
           Logout <LuLogOut className="text-lg" />
         </button>
