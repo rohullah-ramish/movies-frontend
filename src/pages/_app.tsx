@@ -7,10 +7,12 @@ import { useRouter } from "next/router";
 
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
+  
   useEffect(()=>{
     const token = localStorage.getItem('token')
     if(!token) router.push('/')
   },[])
+
   return <Component {...pageProps} />;
 }
 
