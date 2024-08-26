@@ -86,7 +86,7 @@ function DataView(props: DataViewProps) {
       </Header>
 
       <div className="flex flex-col items-center justify-center gap-6 lg:gap-12">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-[20px] lg:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[20px] lg:gap-6">
           {data.map((movie, key) => (
             <MovieView key={key} movie={movie} />
           ))}
