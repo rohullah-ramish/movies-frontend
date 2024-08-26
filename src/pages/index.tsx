@@ -2,6 +2,7 @@ import MainLayout from "@/layouts/MainLayout";
 import { useLoginUserMutation } from "@/services/auth";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -15,17 +16,19 @@ function Login() {
   const handleLogin = async () => {
     try {
       const result = await loginUser({ email, password }).unwrap();
-      console.log("Login successful:", result);
       
       if (result.success) {
         localStorage.setItem("token", result.token);
         localStorage.setItem("refresh-token", result.refresh_token);
+        toast.success('Login successfully')
         router.push("/movies");
       } else {
-        console.log("res", result.message);
+        // console.log("res", result.message);
+        toast.error(result.message)
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      // console.error("Login failed:", error);
+      toast.error("Login failed")
     }
   };
 
@@ -64,6 +67,7 @@ function Login() {
           </button>
         </div>
       </div>
+      <Toaster />
     </MainLayout>
   );
 }
