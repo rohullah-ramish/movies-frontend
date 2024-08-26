@@ -23,6 +23,7 @@ function DataView(props: DataViewProps) {
   const [search, setSearch] = useState("");
   const [isLoggedIn] = useState(localStorage.getItem("token") ? true : false);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+
   const router = useRouter();
 
   const logout = () => {
@@ -67,7 +68,10 @@ function DataView(props: DataViewProps) {
           ) : (
             ""
           )}
-          <CiSearch className="text-4xl cursor-pointer" onClick={overLayHandler}  />
+          <CiSearch
+            className="text-4xl cursor-pointer"
+            onClick={overLayHandler}
+          />
         </Title>
         {isLoggedIn ? (
           <button
@@ -81,13 +85,17 @@ function DataView(props: DataViewProps) {
         )}
       </Header>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {data.map((movie, key) => (
-          <MovieView key={key} movie={movie} />
-        ))}
+      <div className="flex flex-col items-center justify-center gap-6 lg:gap-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {data.map((movie, key) => (
+            <MovieView key={key} movie={movie} />
+          ))}
+        </div>
+
+        <Pagination {...rest} />
       </div>
 
-      <Overlay isOpen={isOverlayOpen} onClose={handleCloseOverlay}>
+      {/* <Overlay isOpen={isOverlayOpen} onClose={handleCloseOverlay}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -111,8 +119,7 @@ function DataView(props: DataViewProps) {
             </span>
           </div>
         </form>
-      </Overlay>
-      <Pagination {...rest} />
+      </Overlay> */}
     </MovieWrapper>
   );
 }
