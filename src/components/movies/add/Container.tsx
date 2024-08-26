@@ -3,20 +3,25 @@ import Header from "../Header";
 import Title from "../Title";
 import { FiDownload } from "react-icons/fi";
 import { useState } from "react";
+import toast, { Toaster } from 'react-hot-toast';
 import { useAddMoviesMutation } from "@/services/movies";
 
 function AddMovieContainer() {
   const [title, setTitle] = useState("");
   const [publish_year, setPublishYear] = useState(0);
+  
   const [addMovies, { data: moviesData, error, isLoading }] =
     useAddMoviesMutation();
+
   const handleForm = async () => {
     if (title && publish_year) {
       try {
         const result = await addMovies({ title, publish_year }).unwrap();
+        toast.success("Movie Added in Your List !")
         console.log("Movie added successfully:", result);
       } catch (err) {
         console.error("Failed to add movie:", err);
+        toast.error("Failed to add movie")
       }
     }
   };
@@ -60,6 +65,7 @@ function AddMovieContainer() {
           </div>
         </div>
       </div>
+      <Toaster />
     </MovieWrapper>
   );
 }
