@@ -3,6 +3,7 @@ import Header from "../Header";
 import Title from "../Title";
 import { FiDownload } from "react-icons/fi";
 import { ChangeEventHandler, useRef, useState } from "react";
+import { useRouter } from "next/router";
 import toast, { Toaster } from "react-hot-toast";
 import { useAddMoviesMutation } from "@/services/movies";
 
@@ -11,6 +12,8 @@ function AddMovieContainer() {
   const [publishYear, setPublishYear] = useState(0);
 
   const [poster, setPoster] = useState<string | undefined>();
+  const [file, setFile] = useState<File | undefined>();
+  const router = useRouter();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -20,8 +23,15 @@ function AddMovieContainer() {
   const handleForm = async () => {
     if (title && publishYear) {
       try {
-        const result = await addMovies({ title, publish_year: publishYear }).unwrap();
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("publish_year", publishYear.toString()); // Convert number to string
+        if (poster) {
+          formData.append("poster", file as any);
+        }
+        const result = await addMovies(formData).unwrap();
         toast.success("Movie Added in Your List !");
+        router.push('/movies')
         console.log("Movie added successfully:", result);
       } catch (err) {
         console.error("Failed to add movie:", err);
@@ -42,15 +52,16 @@ function AddMovieContainer() {
       file.type !== "image/jpeg" &&
       file.type !== "image/jpg"
     ) {
-      alert("Please select a PNG, JPG or JPEG image file.");
+      toast.error("Please select a PNG, JPG or JPEG image file.");
       return;
     }
 
     if (file.size > 1024 * 1024 * 2) {
-      alert("File size should not exceed 2MB.");
+      toast.error("File size should not exceed 2MB.");
       return;
     }
 
+    setFile(file)
     const reader = new FileReader();
     reader.onload = () => setPoster(reader.result as string);
     reader.readAsDataURL(file);
@@ -110,7 +121,9 @@ function AddMovieContainer() {
               />
             </div>
             <div className="hidden md:flex items-start justify-start w-full gap-5">
-              <button className="border border-white max-w-[167px] hover:bg-accent">
+              <button className="border border-white max-w-[167px] hover:bg-accent"
+              onClick={()=>  router.push('/movies')}
+              >
                 Cancel
               </button>
               <button
@@ -124,10 +137,10 @@ function AddMovieContainer() {
         </div>
 
         <div className="flex md:hidden items-start justify-start w-full gap-5">
-          <button className="border border-white hover:bg-accent">
+          <button className="border border-white hover:bg-accent" onClick={()=>  router.push('/movies')}>
             Cancel
           </button>
-          <button className="bg-primary">Submit</button>
+          <button className="bg-primary"  onClick={handleForm}>Submit</button>
         </div>
       </div>
       <Toaster />
