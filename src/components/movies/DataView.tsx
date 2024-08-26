@@ -21,7 +21,7 @@ function DataView(props: DataViewProps) {
   const { data, searchQuery, ...rest } = props;
 
   const [search, setSearch] = useState("");
-  const [isLoggedIn] = useState(localStorage.getItem("token") ? true : false);
+  const [isLoggedIn,setIsLoggedIn] = useState(false);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
 
   const router = useRouter();
@@ -51,11 +51,13 @@ function DataView(props: DataViewProps) {
 
   useEffect(() => {
     document.addEventListener("keydown", escFunction, false);
-
+    setIsLoggedIn(localStorage.getItem("token") ? true : false)
     return () => {
       document.removeEventListener("keydown", escFunction, false);
     };
-  }, [escFunction]);
+
+    
+    }, [escFunction]);
 
   return (
     <MovieWrapper>

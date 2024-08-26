@@ -23,7 +23,7 @@ function DetailMovieContainer() {
   const [publishYear, setPublishYear] = useState(0);
 
   const [poster, setPoster] = useState<string | undefined>();
-  const [isLoggedIn] = useState(localStorage.getItem("token") ? true : false);
+  const [isLoggedIn,setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const id = router.query.id;
@@ -35,6 +35,8 @@ function DetailMovieContainer() {
       setPublishYear(Number(data?.publish_year) || 0);
       setPoster(data?.poster || "");
     }
+
+    setIsLoggedIn(localStorage.getItem("token") ? true : false)
   }, [moviesData]);
 
   return (
