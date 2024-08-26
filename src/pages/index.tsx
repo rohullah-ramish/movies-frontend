@@ -26,9 +26,8 @@ function Login() {
         // console.log("res", result.message);
         toast.error(result.message)
       }
-    } catch (error) {
-      // console.error("Login failed:", error);
-      toast.error("Login failed")
+    } catch (error:any) {
+      toast.error(error.data.message)
     }
   };
 

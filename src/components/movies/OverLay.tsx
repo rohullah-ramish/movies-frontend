@@ -11,7 +11,7 @@ const Overlay: React.FC<OverlayProps> = ({ isOpen, onClose, children }) => {
 
   return (
     <div
-      className="inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      className="inset-0 absolute z-50 flex items-center justify-center bg-black bg-opacity-50"
       onClick={onClose}
     >
       <div className="absolute inset-0 backdrop-blur-md"></div> 

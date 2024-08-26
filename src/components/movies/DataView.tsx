@@ -95,7 +95,7 @@ function DataView(props: DataViewProps) {
         <Pagination {...rest} />
       </div>
 
-      {/* <Overlay isOpen={isOverlayOpen} onClose={handleCloseOverlay}>
+      <Overlay isOpen={isOverlayOpen} onClose={handleCloseOverlay}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -119,7 +119,7 @@ function DataView(props: DataViewProps) {
             </span>
           </div>
         </form>
-      </Overlay> */}
+      </Overlay>
     </MovieWrapper>
   );
 }
