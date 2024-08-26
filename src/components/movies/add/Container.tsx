@@ -2,40 +2,68 @@ import MovieWrapper from "../MovieWrapper";
 import Header from "../Header";
 import Title from "../Title";
 import { FiDownload } from "react-icons/fi";
-import { ChangeEventHandler, useRef, useState } from "react";
+import { ChangeEventHandler, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import toast, { Toaster } from "react-hot-toast";
-import { useAddMoviesMutation } from "@/services/movies";
+import {
+  getMoviesDetails,
+  useAddMoviesMutation,
+  useGetMoviesDetailsQuery,
+  useUpdateMoviesMutation,
+} from "@/services/movies";
+import { useDispatch } from "react-redux";
 
 function AddMovieContainer() {
+  const router = useRouter();
+
+  const { id } = router.query;
+
+  const [addMovies] = useAddMoviesMutation();
+  const [updateMovies] = useUpdateMoviesMutation();
+  const {
+    data: moviesData,
+    error,
+    isLoading,
+  } = useGetMoviesDetailsQuery(id?.toString() || "", {
+    skip: id?.length == 0,
+  });
+
   const [title, setTitle] = useState("");
   const [publishYear, setPublishYear] = useState(0);
 
   const [poster, setPoster] = useState<string | undefined>();
   const [file, setFile] = useState<File | undefined>();
-  const router = useRouter();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [addMovies, { data: moviesData, error, isLoading }] =
-    useAddMoviesMutation();
-
   const handleForm = async () => {
-    if (title && publishYear) {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("publish_year", publishYear.toString()); // Convert number to string
+    if (poster) {
+      formData.append("poster", (file as any) || poster);
+    }
+    if (!id) {
+      const toastId = toast.loading("Movie adding in your list...");
       try {
-        const formData = new FormData();
-        formData.append("title", title);
-        formData.append("publish_year", publishYear.toString()); // Convert number to string
-        if (poster) {
-          formData.append("poster", file as any);
-        }
         const result = await addMovies(formData).unwrap();
+        toast.remove(toastId);
         toast.success("Movie Added in Your List !");
-        router.push('/movies')
-        console.log("Movie added successfully:", result);
+        router.push("/movies");
       } catch (err) {
-        console.error("Failed to add movie:", err);
+        toast.remove(toastId);
         toast.error("Failed to add movie");
+      }
+    } else {
+      try {
+        const result = await updateMovies({
+          id: id.toString(),
+          body: formData,
+        }).unwrap();
+        toast.success("Movie Update in Your List !");
+        router.push("/movies");
+      } catch (err) {
+        toast.error("Failed to update movie");
       }
     }
   };
@@ -61,7 +89,7 @@ function AddMovieContainer() {
       return;
     }
 
-    setFile(file)
+    setFile(file);
     const reader = new FileReader();
     reader.onload = () => setPoster(reader.result as string);
     reader.readAsDataURL(file);
@@ -69,29 +97,45 @@ function AddMovieContainer() {
 
   const handleImageOpen = () => {
     if (poster) return;
-
     fileInputRef.current?.click();
   };
+
+  useEffect(() => {
+    const id = router.query.id;
+
+    console.log(moviesData);
+    if (id) {
+      const data = moviesData?.data[0];
+      setTitle(data?.title || "");
+      setPublishYear(Number(data?.publish_year) || 0);
+      setPoster(data?.poster || "");
+    }
+  }, [moviesData]);
 
   return (
     <MovieWrapper>
       <Header>
-        <Title>Create a new movie </Title>
+        <Title>{id ? <>Edit</> : <>Create a new movie</>}</Title>
       </Header>
 
       <div className="w-full flex flex-col gap-6">
         <div className="flex flex-col-reverse md:flex-row w-full gap-6 lg:gap-12">
-          <div
-            className="aspect-[1/1] max-w-[420px] w-full rounded-[10px]"
-            onClick={handleImageOpen}
-          >
+          <div className="aspect-[1/1] max-w-[420px] w-full rounded-[10px]">
             {poster ? (
-              <div className="">
-                <img src={poster} className="object-cover w-full h-full" />
-                <button className="bg-primary">Upload Another</button>
+              <div className="h-full flex-col flex flex-1">
+                <img src={poster} className="object-contain w-full h-80" />
+                <button
+                  className="bg-primary mt-4"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  Upload Another
+                </button>
               </div>
             ) : (
-              <div className="w-full h-full flex-1 rounded-[10px] cursor-pointer bg-neutral border border-dashed flex flex-col items-center justify-center gap-3">
+              <div
+                className="w-full h-full flex-1 rounded-[10px] cursor-pointer bg-neutral border border-dashed flex flex-col items-center justify-center gap-3"
+                onClick={handleImageOpen}
+              >
                 <FiDownload />
                 <p className="text-sm">Drop an image here</p>
               </div>
@@ -121,8 +165,9 @@ function AddMovieContainer() {
               />
             </div>
             <div className="hidden md:flex items-start justify-start w-full gap-5">
-              <button className="border border-white max-w-[167px] hover:bg-accent"
-              onClick={()=>  router.push('/movies')}
+              <button
+                className="border border-white max-w-[167px] hover:bg-accent"
+                onClick={() => router.push("/movies")}
               >
                 Cancel
               </button>
@@ -130,17 +175,22 @@ function AddMovieContainer() {
                 className="bg-primary max-w-[167px] cursor-pointer"
                 onClick={handleForm}
               >
-                Submit
+                {id ? <>Update</> : <>Create</>}
               </button>
             </div>
           </div>
         </div>
 
         <div className="flex md:hidden items-start justify-start w-full gap-5">
-          <button className="border border-white hover:bg-accent" onClick={()=>  router.push('/movies')}>
+          <button
+            className="border border-white hover:bg-accent"
+            onClick={() => router.push("/movies")}
+          >
             Cancel
           </button>
-          <button className="bg-primary"  onClick={handleForm}>Submit</button>
+          <button className="bg-primary" onClick={handleForm}>
+            {id ? <>Update</> : <>Create</>}
+          </button>
         </div>
       </div>
       <Toaster />

@@ -62,7 +62,7 @@ export const movieApi = createApi({
         body: body,
       }),
     }),
-    updateMovies: builder.query<string, any>({
+    updateMovies: builder.mutation<any, {id:string,body:FormData}>({
       query: ({ id, body }) => ({
         url: `movies/${id}`,
         method: "PATCH",
@@ -75,16 +75,18 @@ export const movieApi = createApi({
         method: "DELETE",
       }),
     }),
-    getMoviesDetails: builder.query<any, any>({
-      query: (id) => ({
-        url: `movies/${id}`,
-        method: "GET",
-      }),
+    getMoviesDetails: builder.query<GetMoviesListResponse, string>({
+      query: (id: string) => `movies/${id}`,
     }),
   }),
 });
 
-export const { useGetMoviesListQuery,useAddMoviesMutation } = movieApi;
+export const {
+  useGetMoviesListQuery,
+  useAddMoviesMutation,
+  useGetMoviesDetailsQuery,
+  useUpdateMoviesMutation
+} = movieApi;
 
 export const { addMovies, getMoviesDetails, deleteMovies, updateMovies } =
   movieApi.endpoints;

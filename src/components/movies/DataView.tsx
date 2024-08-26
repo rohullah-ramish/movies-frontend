@@ -36,9 +36,10 @@ function DataView(props: DataViewProps) {
   };
 
   const handleCloseOverlay = () => {
-    console.log("search", search);
     if (search.length > 0) {
       searchQuery(search);
+    }else{
+      searchQuery('');
     }
     setIsOverlayOpen(false);
   };
@@ -84,6 +85,12 @@ function DataView(props: DataViewProps) {
           ""
         )}
       </Header>
+
+      {search.length > 0 ? (
+        <span className="text-4xl"> Search results for {search}</span>
+      ) : (
+        ""
+      )}
 
       <div className="flex flex-col items-center justify-center gap-6 lg:gap-12">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[20px] lg:gap-6">

@@ -1,4 +1,5 @@
 import { Movie } from "@/services/movies";
+import { useRouter } from "next/router";
 
 type MovieViewProps = {
   movie: Movie;
@@ -6,9 +7,9 @@ type MovieViewProps = {
 
 function MovieView(props: MovieViewProps) {
   const { movie } = props;
-
+  const router = useRouter()
   return (
-    <div className="w-full bg-accent rounded-xl">
+    <div className="w-full bg-accent rounded-xl cursor-pointer " onClick={()=> router.push(`/movies/details/${movie._id}`)}>
       <div className="px-3 pt-3 aspect-[266/400] w-full overflow-hidden">
         <img
           alt={movie.title}
