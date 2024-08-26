@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 type OverlayProps = {
   isOpen: boolean;
@@ -11,11 +11,12 @@ const Overlay: React.FC<OverlayProps> = ({ isOpen, onClose, children }) => {
 
   return (
     <div
-      className="bg-black bg-opacity-50 back-drop-blur fixed flex h-full inset-0 items-center justify-center px-6 w-full z-50"
+      className="inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       onClick={onClose}
     >
+      <div className="absolute inset-0 backdrop-blur-md"></div> 
       <div
-        className="bg-accent w-10/12 rounded-lg shadow-lg absolute top-[100px] "
+        className="absolute bg-accent rounded-lg shadow-lg top-[120px] w-10/12 z-10"
         onClick={(e) => e.stopPropagation()}
       >
         {children}

@@ -10,8 +10,8 @@ function AddMovieContainer() {
         <Title>Create a new movie </Title>
       </Header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-12">
-        <div className="aspect-[1/1] w-full rounded-[10px] cursor-pointer bg-neutral border border-dashed flex flex-col items-center justify-center gap-3">
+      <div className="sm:gap-0 grid grid-cols-1 lg:grid-cols-2 w-full  md:gap-12">
+        <div className="aspect-[1/1] w-full rounded-[10px] h-[calc(100%-10rem)] cursor-pointer bg-neutral border border-dashed flex flex-col items-center justify-center gap-3">
           <FiDownload />
           <p className="text-sm">Drop an image here</p>
         </div>

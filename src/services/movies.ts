@@ -41,8 +41,19 @@ export const movieApi = createApi({
     }
   },
   endpoints: (builder) => ({
-    getMoviesList: builder.query<GetMoviesListResponse, number>({
-      query: (page = 1) => `movies?page=${page}&limit=${PAGE_SIZE}`,
+    getMoviesList: builder.query<
+      GetMoviesListResponse,
+      { page: number; search: string }
+    >({
+      query: ({ page = 1, search = "" }) => {
+        let queryString = `movies?page=${page}&limit=${PAGE_SIZE}`;
+
+        if (search.length > 0) {
+          queryString += `&search=${search}`;
+        }
+
+        return queryString;
+      },
     }),
     addMovies: builder.query<any, number>({
       query: (body) => ({

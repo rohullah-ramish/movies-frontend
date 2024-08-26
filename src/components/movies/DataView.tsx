@@ -14,10 +14,11 @@ import Overlay from "./OverLay";
 
 type DataViewProps = PaginationProps & {
   data: Movie[];
+  searchQuery: (query: string) => void;
 };
 
 function DataView(props: DataViewProps) {
-  const { data, ...rest } = props;
+  const { data, searchQuery, ...rest } = props;
 
   const [search, setSearch] = useState("");
   const [isLoggedIn] = useState(localStorage.getItem("token") ? true : false);
@@ -35,11 +36,14 @@ function DataView(props: DataViewProps) {
 
   const handleCloseOverlay = () => {
     console.log("search", search);
+    if (search.length > 0) {
+      searchQuery(search);
+    }
     setIsOverlayOpen(false);
   };
   const escFunction = useCallback((event: { key: string }) => {
     if (event.key === "Escape") {
-      handleCloseOverlay()
+      handleCloseOverlay();
     }
   }, []);
 
@@ -63,11 +67,11 @@ function DataView(props: DataViewProps) {
           ) : (
             ""
           )}
-          <CiSearch className="text-4xl" onClick={overLayHandler} />
+          <CiSearch className="text-4xl cursor-pointer" onClick={overLayHandler}  />
         </Title>
         {isLoggedIn ? (
           <button
-            className="w-[104px] flex items-center justify-center gap-3 text-sm"
+            className="w-[104px] flex items-center justify-center gap-3 text-sm cursor-pointer"
             onClick={logout}
           >
             Logout <LuLogOut className="text-lg" />
@@ -98,6 +102,9 @@ function DataView(props: DataViewProps) {
               value={search}
               className="!bg-transparent focus-visible:outline-0 "
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                e.key === "Enter" ? handleCloseOverlay() : "";
+              }}
             />
             <span className="bg-neutral h-[32px] p-2 rounded-md w-[32px]">
               ecs
