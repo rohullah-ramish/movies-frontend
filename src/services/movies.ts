@@ -55,14 +55,14 @@ export const movieApi = createApi({
         return queryString;
       },
     }),
-    addMovies: builder.query<any, number>({
+    addMovies: builder.mutation<any, any>({
       query: (body) => ({
         url: "movies",
         method: "POST",
         body: body,
       }),
     }),
-    updateMovies: builder.query<any, any>({
+    updateMovies: builder.query<string, any>({
       query: ({ id, body }) => ({
         url: `movies/${id}`,
         method: "PATCH",
@@ -84,7 +84,7 @@ export const movieApi = createApi({
   }),
 });
 
-export const { useGetMoviesListQuery } = movieApi;
+export const { useGetMoviesListQuery,useAddMoviesMutation } = movieApi;
 
 export const { addMovies, getMoviesDetails, deleteMovies, updateMovies } =
   movieApi.endpoints;

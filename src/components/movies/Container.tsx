@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import toast, { Toaster } from 'react-hot-toast';
 import { useGetMoviesListQuery } from "@/services/movies";
 
 import LoadingView from "@/components/elements/LoadingView";
@@ -40,6 +40,7 @@ function MoviesContainer() {
       ) : (
         <NoDataView />
       )}
+        <Toaster />
     </>
   );
 }
