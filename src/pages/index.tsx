@@ -1,33 +1,45 @@
-import MainLayout from "@/layouts/MainLayout";
-import { useLoginUserMutation } from "@/services/auth";
-import { useRouter } from "next/router";
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { toast, Toaster } from "react-hot-toast";
+import { useLoginUserMutation } from "../services/auth";
+import MainLayout from "@/layouts/MainLayout";
+
+type LoginFormInputs = {
+  email: string;
+  password: string;
+};
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
-
-  const [loginUser, { isLoading, isError }] = useLoginUserMutation();
-
+  const [loginUser, { isLoading }] = useLoginUserMutation();
   const router = useRouter();
 
-  const handleLogin = async () => {
+  // Set up form validation
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    trigger,
+  } = useForm<LoginFormInputs>({ mode: "onChange" });
+
+  const handleLogin = async (data: LoginFormInputs) => {
     try {
-      const result = await loginUser({ email, password }).unwrap();
-      
+      const result = await loginUser({
+        email: data.email,
+        password: data.password,
+      }).unwrap();
+
       if (result.success) {
         localStorage.setItem("token", result.token);
         localStorage.setItem("refresh-token", result.refresh_token);
-        toast.success('Login successfully')
+        toast.success("Login successfully");
         router.push("/movies");
       } else {
-        // console.log("res", result.message);
-        toast.error(result.message)
+        toast.error(result.message);
       }
-    } catch (error:any) {
-      toast.error(error.data.message)
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Login failed");
     }
   };
 
@@ -35,19 +47,54 @@ function Login() {
     <MainLayout>
       <div className="flex-1 h-full w-full flex flex-col items-center justify-center p-6 max-w-[300px] mx-auto">
         <h2 className="mb-8 font-montserrat font-semibold">Sign In</h2>
-        <div className="w-full flex flex-col justify-center items-center gap-6">
-          <input
-            type="email"
-            value={email}
-            placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            value={password}
-            placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
+        <form
+          onSubmit={handleSubmit(handleLogin)} 
+          className="w-full flex flex-col justify-center items-center gap-6"
+        >
+          <div className="w-full">
+            <input
+              type="email"
+              placeholder="Email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Invalid email address",
+                },
+              })}
+              onBlur={() => trigger("email")}
+              className={`w-full p-2 ${errors.email ? "border-red-500" : ""}`}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm">
+                {errors.email.message?.toString()}
+              </p>
+            )}
+          </div>
+
+          <div className="w-full">
+            <input
+              type="password"
+              placeholder="Password"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters long",
+                },
+              })}
+              onBlur={() => trigger("password")}
+              className={`w-full p-2 ${
+                errors.password ? "border-red-500" : ""
+              }`}
+            />
+            {errors.password && (
+              <p className="text-red-500 text-sm">
+                {errors.password.message?.toString()}
+              </p>
+            )}
+          </div>
+
           <div className="flex gap-3 items-center justify-center">
             <input
               type="checkbox"
@@ -55,16 +102,17 @@ function Login() {
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
             />
-            <label htmlFor="remember-me">Remember me</label>
+            <label htmlFor="remember-me" className="font-light">Remember me</label>
           </div>
+
           <button
+            type="submit"
             className="bg-primary font-bold"
-            onClick={handleLogin}
-            disabled={isLoading}
+            disabled={!isValid || isLoading}
           >
-            Login
+            {isLoading ? "Logging in..." : "Login"}
           </button>
-        </div>
+        </form>
       </div>
       <Toaster />
     </MainLayout>
