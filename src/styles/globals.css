@@ -54,6 +54,7 @@
     @apply text-white font-montserrat;
   }
 
+  
   input[type="checkbox"] {
     @apply h-[16px] w-[16px] relative;
   }
