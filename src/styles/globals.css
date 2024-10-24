@@ -55,7 +55,7 @@
   }
 
   input[type="checkbox"] {
-    @apply h-[18px] w-[18px] relative;
+    @apply h-[16px] w-[16px] relative;
   }
 
   input[type="checkbox"]::before {

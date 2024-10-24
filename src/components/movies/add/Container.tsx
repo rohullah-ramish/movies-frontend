@@ -29,7 +29,7 @@ function AddMovieContainer() {
   });
 
   const [title, setTitle] = useState("");
-  const [publishYear, setPublishYear] = useState(0);
+  const [publishYear, setPublishYear] = useState("");
 
   const [poster, setPoster] = useState<string | undefined>();
   const [file, setFile] = useState<File | undefined>();
@@ -107,7 +107,7 @@ function AddMovieContainer() {
     if (id) {
       const data = moviesData?.data[0];
       setTitle(data?.title || "");
-      setPublishYear(Number(data?.publish_year) || 0);
+      setPublishYear(data?.publish_year || "");
       setPoster(data?.poster || "");
     }
   }, [moviesData]);
@@ -137,7 +137,7 @@ function AddMovieContainer() {
                 onClick={handleImageOpen}
               >
                 <FiDownload />
-                <p className="text-sm">Drop an image here</p>
+                <p className="text-sm font-normal">Drop an image here</p>
               </div>
             )}
           </div>
@@ -161,21 +161,21 @@ function AddMovieContainer() {
                 type="number"
                 placeholder="Publishing Year"
                 value={publishYear}
-                onChange={(e) => setPublishYear(Number(e.target.value))}
+                onChange={(e) => setPublishYear(e.target.value)}
               />
             </div>
             <div className="hidden md:flex items-start justify-start w-full gap-5">
               <button
-                className="border border-white max-w-[167px] hover:bg-accent"
+                className="border font-bold border-white max-w-[167px] hover:bg-accent"
                 onClick={() => router.push("/movies")}
               >
                 Cancel
               </button>
               <button
-                className="bg-primary max-w-[167px] cursor-pointer"
+                className="bg-primary max-w-[167px] cursor-pointer font-bold "
                 onClick={handleForm}
               >
-                {id ? <>Update</> : <>Create</>}
+                {id ? <>Update</> : <>Submit</>}
               </button>
             </div>
           </div>
@@ -183,13 +183,13 @@ function AddMovieContainer() {
 
         <div className="flex md:hidden items-start justify-start w-full gap-5">
           <button
-            className="border border-white hover:bg-accent"
+            className="border font-bold border-white hover:bg-accent"
             onClick={() => router.push("/movies")}
           >
             Cancel
           </button>
-          <button className="bg-primary" onClick={handleForm}>
-            {id ? <>Update</> : <>Create</>}
+          <button className="bg-primary font-bold" onClick={handleForm}>
+            {id ? <>Update</> : <>Submit</>}
           </button>
         </div>
       </div>

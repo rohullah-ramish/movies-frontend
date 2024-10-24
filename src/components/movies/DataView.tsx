@@ -62,8 +62,8 @@ function DataView(props: DataViewProps) {
   return (
     <MovieWrapper>
       <Header>
-        <Title>
-          My movies
+        <Title >
+          <h4 className="semibold">My movies</h4>
           {isLoggedIn ? (
             <Link className="text-[inherit]" href="/movies/add">
               <IoIosAddCircleOutline className="text-4xl" />
@@ -78,7 +78,7 @@ function DataView(props: DataViewProps) {
         </Title>
         {isLoggedIn ? (
           <button
-            className="w-[104px] flex items-center justify-center gap-3 text-sm cursor-pointer"
+            className="w-[104px] semibold flex items-center justify-center gap-3 text-sm cursor-pointer "
             onClick={logout}
           >
             Logout <LuLogOut className="text-lg" />

@@ -45,7 +45,7 @@ function Login() {
 
   return (
     <MainLayout>
-      <div className="flex-1 h-full w-full flex flex-col items-center justify-center p-6 max-w-[300px] mx-auto">
+      <div className="flex-1 h-full w-full flex flex-col items-center justify-center p-1 md:p-6 max-w-[300px] mx-auto">
         <h2 className="mb-8 font-montserrat font-semibold">Sign In</h2>
         <form
           onSubmit={handleSubmit(handleLogin)} 
@@ -100,6 +100,7 @@ function Login() {
               type="checkbox"
               id="remember-me"
               checked={remember}
+              className="rounded-lg"
               onChange={(e) => setRemember(e.target.checked)}
             />
             <label htmlFor="remember-me" className="font-light">Remember me</label>
