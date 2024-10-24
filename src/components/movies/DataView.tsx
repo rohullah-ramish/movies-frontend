@@ -11,6 +11,9 @@ import Pagination, { PaginationProps } from "./Pagination";
 import { useCallback, useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import Overlay from "./OverLay";
+import Cookies from 'js-cookie';
+import NoDataFoundView from "../elements/NoDataFoundView";
+import NoDataView from "../elements/NoDataView";
 
 type DataViewProps = PaginationProps & {
   data: Movie[];
@@ -22,12 +25,13 @@ function DataView(props: DataViewProps) {
 
   const [search, setSearch] = useState("");
   const [isLoggedIn,setIsLoggedIn] = useState(false);
-  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false)
 
   const router = useRouter();
 
   const logout = () => {
     localStorage.clear();
+    Cookies.remove('token');
     router.push("/");
   };
 
@@ -63,7 +67,7 @@ function DataView(props: DataViewProps) {
     <MovieWrapper>
       <Header>
         <Title >
-          <h4 className="semibold">My movies</h4>
+			<h4 className="font-thin text-[48px]">My movies</h4>
           {isLoggedIn ? (
             <Link className="text-[inherit]" href="/movies/add">
               <IoIosAddCircleOutline className="text-4xl" />
@@ -80,7 +84,7 @@ function DataView(props: DataViewProps) {
           <button
             className="w-[104px] semibold flex items-center justify-center gap-3 text-sm cursor-pointer "
             onClick={logout}
-          >
+          >	
             Logout <LuLogOut className="text-lg" />
           </button>
         ) : (
@@ -93,17 +97,23 @@ function DataView(props: DataViewProps) {
       ) : (
         ""
       )}
+		{
+	data?.length == 0 && search.length > 0 ? (
+        <NoDataFoundView resetSearchQuery={(q) => setSearch(q)} />
+      ) : data.length  === 0 &&(
+        <NoDataView />
+      )
+		}
+		{ data?.length !== 0 && <div className="flex flex-col items-center justify-center gap-6 lg:gap-12">
+			<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[20px] lg:gap-6">
+				{data.map((movie, key) => (
+					<MovieView key={key} movie={movie} />
+				))}
+			</div>
 
-      <div className="flex flex-col items-center justify-center gap-6 lg:gap-12">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[20px] lg:gap-6">
-          {data.map((movie, key) => (
-            <MovieView key={key} movie={movie} />
-          ))}
-        </div>
-
-        <Pagination {...rest} />
-      </div>
-
+			<Pagination {...rest} />
+		</div>
+		}
       <Overlay isOpen={isOverlayOpen} onClose={handleCloseOverlay}>
         <form
           onSubmit={(e) => {

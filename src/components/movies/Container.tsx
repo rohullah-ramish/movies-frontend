@@ -25,7 +25,7 @@ function MoviesContainer() {
         <LoadingView />
       ) : error ? (
         <ErrorView error={error} />
-      ) : moviesData?.data?.length ? (
+      ) :(
         <DataView
           data={moviesData.data}
           total={moviesData.total}
@@ -33,12 +33,12 @@ function MoviesContainer() {
           prev={() => setPage((p) => p - 1)}
           next={() => setPage((p) => p + 1)}
           jumpToPage={(p) => setPage(p)}
-          searchQuery={(q) => setSearchQuery(q)}
+		  searchQuery={(q) => { 
+			  setPage(1);		
+			  setSearchQuery(q);
+		  }
+		}
         />
-      ) : moviesData?.data?.length == 0 && search.length > 0 ? (
-        <NoDataFoundView resetSearchQuery={(q) => setSearchQuery(q)} />
-      ) : (
-        <NoDataView />
       )}
         <Toaster />
     </>

@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { toast, Toaster } from "react-hot-toast";
 import { useLoginUserMutation } from "../services/auth";
 import MainLayout from "@/layouts/MainLayout";
-
+import Cookies from 'js-cookie'; 
 type LoginFormInputs = {
   email: string;
   password: string;
@@ -12,7 +12,7 @@ type LoginFormInputs = {
 
 function Login() {
   const [remember, setRemember] = useState(false);
-  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const [loginUser, { isLoading, success }] = useLoginUserMutation();
   const router = useRouter();
 
   // Set up form validation
@@ -33,6 +33,7 @@ function Login() {
       if (result.success) {
         localStorage.setItem("token", result.token);
         localStorage.setItem("refresh-token", result.refresh_token);
+		Cookies.set('token', result.token, { expires: 1 }); 
         toast.success("Login successfully");
         router.push("/movies");
       } else {
@@ -40,10 +41,10 @@ function Login() {
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Login failed");
+	  console.log(error)
     }
   };
-
-  return (
+    return (
     <MainLayout>
       <div className="flex-1 h-full w-full flex flex-col items-center justify-center p-1 md:p-6 max-w-[300px] mx-auto">
         <h2 className="mb-8 font-montserrat font-semibold">Sign In</h2>
@@ -121,3 +122,24 @@ function Login() {
 }
 
 export default Login;
+
+
+
+export async function getServerSideProps(context) {
+  const { req, res } = context;
+  const token = req.cookies.token; // Assuming the token is stored in a cookie
+
+  if (token) {
+    return {
+      redirect: {
+        destination: '/movies',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {}, // Pass any props you need for the page
+  };
+}
+

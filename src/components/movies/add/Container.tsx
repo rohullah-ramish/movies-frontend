@@ -159,9 +159,10 @@ function AddMovieContainer() {
               />
               <input
                 type="number"
-                placeholder="Publishing Year"
+				  placeholder="Publishing Year"
+				  className="!w-[50%]"
                 value={publishYear}
-                onChange={(e) => setPublishYear(e.target.value)}
+				  onChange={(e) => e.target.value >= 0 && setPublishYear(e.target.value)}
               />
             </div>
             <div className="hidden md:flex items-start justify-start w-full gap-5">
