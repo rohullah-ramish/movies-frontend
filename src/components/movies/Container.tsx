@@ -27,8 +27,8 @@ function MoviesContainer() {
         <ErrorView error={error} />
       ) :(
         <DataView
-          data={moviesData.data}
-          total={moviesData.total}
+			data={moviesData?.data|| []}
+          total={moviesData?.total || 0}
           page={page}
           prev={() => setPage((p) => p - 1)}
           next={() => setPage((p) => p + 1)}

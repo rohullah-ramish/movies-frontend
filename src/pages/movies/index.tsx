@@ -1,5 +1,6 @@
 import MoviesContainer from "@/components/movies/Container";
 import MainLayout from "@/layouts/MainLayout";
+import {GetServerSidePropsContext} from "next";
 
 function Movies() {
   return (
@@ -11,7 +12,7 @@ function Movies() {
 
 export default Movies;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { req, res } = context;
   const token = req.cookies.token; // Assuming the token is stored in a cookie
 

@@ -5,6 +5,8 @@ import { toast, Toaster } from "react-hot-toast";
 import { useLoginUserMutation } from "../services/auth";
 import MainLayout from "@/layouts/MainLayout";
 import Cookies from 'js-cookie'; 
+import {GetServerSidePropsContext} from "next";
+
 type LoginFormInputs = {
   email: string;
   password: string;
@@ -12,7 +14,7 @@ type LoginFormInputs = {
 
 function Login() {
   const [remember, setRemember] = useState(false);
-  const [loginUser, { isLoading, success }] = useLoginUserMutation();
+  const [loginUser, { isLoading, success }]: any = useLoginUserMutation();
   const router = useRouter();
 
   // Set up form validation
@@ -33,6 +35,7 @@ function Login() {
       if (result.success) {
         localStorage.setItem("token", result.token);
         localStorage.setItem("refresh-token", result.refresh_token);
+		Cookies.set('refresh_token', result.refresh_token, { expires: 1 }); 
 		Cookies.set('token', result.token, { expires: 1 }); 
         toast.success("Login successfully");
         router.push("/movies");
@@ -125,7 +128,7 @@ export default Login;
 
 
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { req, res } = context;
   const token = req.cookies.token; // Assuming the token is stored in a cookie
 
